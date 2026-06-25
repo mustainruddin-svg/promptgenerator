@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generator Prompt ATP — Ar-Rahmah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue: #185FA5;
+  --blue-light: #E6F1FB;
+  --blue-dark: #0C447C;
+  --teal: #0F6E56;
+  --teal-light: #E1F5EE;
+  --amber: #854F0B;
+  --amber-light: #FAEEDA;
+  --gray: #5F5E5A;
+  --gray-light: #F1EFE8;
+  --border: #e5e4e0;
+  --surface: #f8f7f5;
+  --text: #1a1a18;
+  --text-2: #5F5E5A;
+  --text-3: #9b9a96;
+  --white: #ffffff;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:var(--surface);min-height:100vh}
+
+/* ── HEADER ── */
+header{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:32px;height:32px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+.logo-text{font-size:14px;font-weight:600;color:var(--text)}
+.logo-sub{font-size:11px;color:var(--text-3);margin-top:1px}
+.header-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;background:var(--blue-light);color:var(--blue-dark);border:1px solid #b5d4f4}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:360px 1fr;min-height:calc(100vh - 56px);max-width:1280px;margin:0 auto}
+.panel-left{background:var(--white);border-right:1px solid var(--border);padding:24px;overflow-y:auto;height:calc(100vh - 56px);position:sticky;top:56px}
+.panel-right{padding:24px;overflow-y:auto}
+
+/* ── SECTIONS ── */
+.section{margin-bottom:20px}
+.section-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+
+/* ── FORM ELEMENTS ── */
+select,input{width:100%;padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--white);color:var(--text);outline:none;transition:border-color .15s}
+select:focus,input:focus{border-color:var(--blue)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:12px;font-weight:500;color:var(--text-2)}
+
+/* ── ATP TYPE GRID ── */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.type-btn{padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:var(--white);text-align:left;transition:all .15s;font-family:'Inter',sans-serif}
+.type-btn:hover{border-color:var(--blue);background:var(--blue-light)}
+.type-btn.active{border-color:var(--blue);border-width:1.5px;background:var(--blue-light)}
+.type-btn .tn{font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:2px}
+.type-btn .td{font-size:11px;color:var(--text-3);line-height:1.4}
+.type-btn.active .tn{color:var(--blue-dark)}
+.type-btn.active .td{color:var(--blue)}
+
+/* ── METODE PILLS ── */
+.metode-grid{display:flex;flex-wrap:wrap;gap:7px}
+.metode-pill{padding:6px 14px;font-size:12px;font-weight:500;font-family:'Inter',sans-serif;border:1px solid var(--border);border-radius:20px;cursor:pointer;background:var(--white);color:var(--text-2);transition:all .15s}
+.metode-pill:hover{border-color:var(--blue);color:var(--blue)}
+.metode-pill.active{background:var(--amber-light);border-color:var(--amber);color:var(--amber)}
+.metode-desc{font-size:11px;color:var(--text-3);margin-top:8px;line-height:1.5;min-height:16px}
+
+/* ── CHECKBOXES ── */
+.chk-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;margin-bottom:8px;transition:background .15s}
+.chk-row:hover{background:var(--surface)}
+.chk-row input[type=checkbox]{width:15px;height:15px;margin-top:1px;cursor:pointer;accent-color:var(--blue);flex-shrink:0}
+.chk-label{font-size:12px;font-weight:500;color:var(--text)}
+.chk-sub{font-size:11px;color:var(--text-3);margin-top:2px;line-height:1.4}
+
+/* ── CP PREVIEW BOX ── */
+.cp-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:12px;line-height:1.7;color:var(--text-2);min-height:80px;max-height:160px;overflow-y:auto}
+.cp-placeholder{color:var(--text-3);font-style:italic}
+
+/* ── PROMPT OUTPUT ── */
+.prompt-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.prompt-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.prompt-card-title{font-size:14px;font-weight:600;color:var(--text)}
+.step-badge{font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--blue-light);color:var(--blue-dark)}
+.prompt-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;font-size:12.5px;line-height:1.75;color:var(--text);white-space:pre-wrap;word-break:break-word;max-height:400px;overflow-y:auto;margin-bottom:14px;font-family:'Inter',sans-serif}
+.prompt-box.empty{color:var(--text-3);font-style:italic;font-size:13px}
+.char-count{font-size:11px;color:var(--text-3);margin-bottom:12px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;border-radius:var(--radius-sm);cursor:pointer;transition:all .15s;border:1px solid var(--border)}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-outline{background:var(--white);color:var(--text-2)}
+.btn-outline:hover{background:var(--surface);border-color:var(--blue);color:var(--blue)}
+.btn-teal{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-teal:hover{background:#085041}
+.btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+.copied-msg{font-size:12px;color:var(--teal);display:none;align-items:center;gap:5px;margin-top:8px}
+
+/* ── GUIDE CARD ── */
+.guide-card{background:var(--teal-light);border:1px solid #9FE1CB;border-radius:var(--radius);padding:16px 20px;margin-bottom:16px}
+.guide-title{font-size:13px;font-weight:600;color:var(--teal);margin-bottom:8px}
+.guide-steps{font-size:12px;color:#085041;line-height:1.8}
+.guide-steps span{font-weight:600}
+
+/* ── EMPTY STATE ── */
+.empty-state{padding:48px 24px;text-align:center;color:var(--text-3)}
+.empty-icon{font-size:32px;margin-bottom:12px;opacity:.4}
+.empty-title{font-size:14px;font-weight:500;color:var(--text-2);margin-bottom:6px}
+.empty-sub{font-size:13px;line-height:1.6}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .layout{grid-template-columns:1fr;height:auto}
+  .panel-left{height:auto;position:static;border-right:none;border-bottom:1px solid var(--border)}
+  .panel-right{padding:16px}
+  header{padding:0 16px}
+  .panel-left{padding:16px}
+}
+@media(max-width:480px){
+  .type-grid{grid-template-columns:1fr}
+  .row2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 18 18"><path d="M9 2L15 6V12L9 16L3 12V6L9 2Z"/><path d="M9 6V12M6 7.5L12 10.5"/></svg>
+    </div>
+    <div>
+      <div class="logo-text">Ar-Rahmah · Generator ATP</div>
+      <div class="logo-sub">Alur Tujuan Pembelajaran berbantuan AI</div>
+    </div>
+  </div>
+  <div class="header-badge">SK BSKAP No. 046/H/KR/2025</div>
+</header>
+
+<div class="layout">
+
+  <!-- ── PANEL KIRI: FORM ── -->
+  <div class="panel-left">
+
+    <!-- Jenjang & Mapel -->
+    <div class="section">
+      <div class="section-label">1 · Pilih Mata Pelajaran</div>
+      <div class="field" style="margin-bottom:10px">
+        <label>Jenjang</label>
+        <select id="sel-jenjang" onchange="onJenjang()">
+          <option value="">— Pilih Jenjang —</option>
+          <option value="sd">SD / MI</option>
+          <option value="smp">SMP / MTs</option>
+        </select>
+      </div>
+      <div class="field" style="margin-bottom:10px">
+        <label>Mata Pelajaran</label>
+        <select id="sel-mapel" onchange="onMapel()" disabled>
+          <option value="">— Pilih Jenjang dahulu —</option>
+        </select>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Kelas</label>
+          <select id="sel-kelas" onchange="syncFase()" disabled>
+            <option value="">—</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Fase</label>
+          <select id="sel-fase" onchange="onFase()" disabled>
+            <option value="">—</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- CP Preview -->
+    <div class="section">
+      <div class="section-label">2 · Capaian Pembelajaran</div>
+      <div class="cp-box" id="cp-preview">
+        <span class="cp-placeholder">Pilih mata pelajaran dan fase untuk melihat CP...</span>
+      </div>
+    </div>
+
+    <!-- Kebutuhan Khusus (SLB) -->
+    <div class="section" id="slb-section" style="display:none">
+      <div class="section-label">Kebutuhan Khusus Murid</div>
+      <input id="inp-kebutuhan" type="text" placeholder="cth: Tunagrahita, Tunarungu">
+    </div>
+
+    <!-- Buku Paket -->
+    <div class="section" id="buku-section" style="display:none">
+      <div class="section-label">Materi Buku Paket <span style="font-weight:400;text-transform:none;color:var(--text-3)">(opsional)</span></div>
+      <input id="inp-buku" type="text" placeholder="cth: Bab 1 Bilangan Bulat — Operasi Hitung" oninput="generate()">
+    </div>
+
+    <!-- Jenis ATP -->
+    <div class="section">
+      <div class="section-label">3 · Jenis ATP</div>
+      <div class="type-grid">
+        <button class="type-btn active" id="btn-standar" onclick="setType('standar')">
+          <span class="tn">Standar</span>
+          <span class="td">Tabel 3 kolom · CP → TP → ATP</span>
+        </button>
+        <button class="type-btn" id="btn-bukupaket" onclick="setType('bukupaket')">
+          <span class="tn">Buku Paket</span>
+          <span class="td">5 kolom · SOLO + DPL</span>
+        </button>
+        <button class="type-btn" id="btn-kbc" onclick="setType('kbc')">
+          <span class="tn">Panca Cinta</span>
+          <span class="td">7 kolom · KBC Islam Ar-Rahmah</span>
+        </button>
+        <button class="type-btn" id="btn-slb" onclick="setType('slb')">
+          <span class="tn">Berkebutuhan Khusus</span>
+          <span class="td">Adaptasi SLB / ABK</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Topik & Alokasi (muncul saat Modul PM dicentang, tapi bisa diisi kapan saja) -->
+    <div class="section" id="rpp-section">
+      <div class="section-label">Detail RPP / Modul Ajar</div>
+      <div class="field" style="margin-bottom:10px">
+        <label>Topik / Materi Spesifik</label>
+        <input id="inp-topik" type="text" placeholder="cth: Operasi Bilangan Bulat, Ekosistem Hutan Hujan" oninput="generate()">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Alokasi Waktu</label>
+          <select id="sel-waktu" onchange="generate()">
+            <option value="2x40">2×40 menit</option>
+            <option value="2x45">2×45 menit</option>
+            <option value="3x40">3×40 menit</option>
+            <option value="3x45">3×45 menit</option>
+            <option value="1x35">1×35 menit (SD)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Semester</label>
+          <select id="sel-semester" onchange="generate()">
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metode Pembelajaran -->
+    <div class="section">
+      <div class="section-label">4 · Metode Pembelajaran <span style="font-weight:400;text-transform:none;color:var(--text-3)">(pilih satu)</span></div>
+      <div class="metode-grid">
+        <button class="metode-pill" id="mpil-none"   onclick="setMetode('')">Tidak ditentukan</button>
+        <button class="metode-pill" id="mpil-pjbl"   onclick="setMetode('pjbl')">Project Based Learning</button>
+        <button class="metode-pill" id="mpil-pbl"    onclick="setMetode('pbl')">Problem Based Learning</button>
+        <button class="metode-pill" id="mpil-inquiry" onclick="setMetode('inquiry')">Inquiry</button>
+      </div>
+      <div class="metode-desc" id="metode-desc"></div>
+    </div>
+
+    <!-- Opsi Tambahan -->
+    <div class="section">
+      <div class="section-label">5 · Opsi Tambahan</div>
+      <label class="chk-row">
+        <input type="checkbox" id="chk-leadership" onchange="generate()">
+        <div>
+          <div class="chk-label">Integrasi Nilai Leadership Ar-Rahmah</div>
+          <div class="chk-sub">Spiritual Values · Academic Literacy · Leadership Competencies</div>
+        </div>
+      </label>
+      <label class="chk-row">
+        <input type="checkbox" id="chk-modul" onchange="generate()">
+        <div>
+          <div class="chk-label">Format Modul Ajar Pembelajaran Mendalam</div>
+          <div class="chk-sub">Struktur PM: Mindful · Meaningful · Joyful</div>
+        </div>
+      </label>
+    </div>
+
+  </div>
+
+  <!-- ── PANEL KANAN: OUTPUT ── -->
+  <div class="panel-right">
+
+    <div class="guide-card">
+      <div class="guide-title">Cara pakai</div>
+      <div class="guide-steps">
+        <span>1.</span> Pilih mapel, kelas, dan jenis ATP di panel kiri<br>
+        <span>2.</span> Prompt terbentuk otomatis di bawah ini<br>
+        <span>3.</span> Klik <strong>Salin Prompt</strong> lalu buka Claude.ai<br>
+        <span>4.</span> Paste prompt → hasilkan ATP lengkap
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="prompt-card-title">Prompt siap pakai</div>
+        <div class="step-badge" id="type-badge">ATP Standar</div>
+      </div>
+
+      <div class="prompt-box empty" id="prompt-output">Isi form di panel kiri untuk menghasilkan prompt...</div>
+      <div class="char-count" id="char-count"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="copyPrompt()">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Salin Prompt
+        </button>
+        <button class="btn btn-teal" onclick="openClaude()">
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Buka Claude.ai
+        </button>
+        <button class="btn btn-outline" onclick="openChatGPT()">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          ChatGPT
+        </button>
+      </div>
+      <div class="copied-msg" id="copied-msg">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Prompt berhasil disalin!
+      </div>
+    </div>
+
+    <!-- Referensi Tabel Output -->
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="prompt-card-title">Format tabel yang akan dihasilkan AI</div>
+      </div>
+      <div id="table-ref" style="font-size:12px;color:var(--text-2);line-height:1.8">
+        Pilih jenis ATP untuk melihat format tabel output.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const CP_DATA = {
+  sd: [
+    {id:'pai-sd',nama:'Pendidikan Agama Islam & Budi Pekerti',icon:'☪',fases:[
+      {fase:'A',kelas:'1',cp:'Peserta didik mampu mengenal dan menyebutkan huruf hijaiah dan harakatnya serta membaca Al-Qur\'an dengan tartil. Peserta didik mampu mengenal rukun iman dan rukun Islam secara sederhana, serta menjalankan ibadah salat wajib dengan bimbingan. Peserta didik memiliki akhlak mulia seperti jujur, disiplin, dan santun dalam kehidupan sehari-hari.'},
+      {fase:'B',kelas:'3',cp:'Peserta didik mampu membaca Al-Qur\'an dengan benar sesuai kaidah tajwid dasar dan menghafal beberapa surah pendek. Peserta didik memahami makna rukun iman dan rukun Islam secara lebih mendalam serta mampu melaksanakan salat fardu secara mandiri. Peserta didik menunjukkan perilaku terpuji seperti amanah, peduli, dan toleran.'},
+      {fase:'C',kelas:'5',cp:'Peserta didik mampu membaca dan memahami kandungan Al-Qur\'an terkait akhlak dan ibadah. Peserta didik memahami sejarah Islam dan keteladanan Nabi Muhammad SAW serta para sahabat. Peserta didik mampu menerapkan nilai-nilai Islam dalam kehidupan bermasyarakat dengan menunjukkan akhlak mulia yang konsisten.'}
+    ]},
+    {id:'ppkn-sd',nama:'Pendidikan Pancasila',icon:'🦅',fases:[
+      {fase:'A',kelas:'1',cp:'Peserta didik mampu mengenal identitas diri dan keluarga serta memahami simbol-simbol sila Pancasila secara sederhana. Peserta didik mengenal aturan di rumah dan sekolah, serta menunjukkan perilaku sesuai nilai Pancasila seperti gotong royong dan saling menghormati.'},
+      {fase:'B',kelas:'3',cp:'Peserta didik mampu memahami nilai-nilai Pancasila dalam kehidupan sehari-hari dan menerapkannya di lingkungan keluarga, sekolah, dan masyarakat. Peserta didik mengenal keberagaman suku, budaya, dan agama di Indonesia serta memahami makna Bhinneka Tunggal Ika.'},
+      {fase:'C',kelas:'5',cp:'Peserta didik mampu menganalisis peran Pancasila sebagai dasar negara dan memahami sistem pemerintahan daerah dan pusat secara sederhana. Peserta didik berpartisipasi aktif dalam kehidupan demokratis di sekolah dan memiliki kesadaran akan hak dan kewajiban warga negara.'}
+    ]},
+    {id:'binds-sd',nama:'Bahasa Indonesia',icon:'📖',fases:[
+      {fase:'A',kelas:'1',cp:'Peserta didik mampu bersikap menjadi pembaca dan pemirsa yang baik; mampu menampilkan teks dengan membaca nyaring, memahami kata-kata baru, dan memaknai kosakata baru. Peserta didik mampu menulis kalimat sederhana dengan huruf kapital dan tanda baca yang benar.'},
+      {fase:'B',kelas:'3',cp:'Peserta didik mampu memahami teks informatif dan fiksi, mengidentifikasi informasi pokok dan penjelas, serta merespon secara lisan dan tulisan. Peserta didik mampu menulis teks deskripsi, narasi, dan laporan sederhana menggunakan kosakata yang tepat dengan kalimat yang efektif.'},
+      {fase:'C',kelas:'5',cp:'Peserta didik mampu membaca dengan pemahaman tinggi, mengidentifikasi sudut pandang, membandingkan teks, dan menyimpulkan informasi. Peserta didik mampu menulis teks argumentasi, prosedur, dan eksposisi dengan struktur yang logis, kosakata yang beragam, dan ejaan yang benar.'}
+    ]},
+    {id:'mat-sd',nama:'Matematika',icon:'➕',fases:[
+      {fase:'A',kelas:'1',cp:'Peserta didik mampu menunjukkan pemahaman bilangan cacah 0–999, melakukan operasi penjumlahan dan pengurangan bilangan dua angka, mengenal bangun datar dan bangun ruang sederhana, serta memahami konsep waktu dan satuan pengukuran dasar.'},
+      {fase:'B',kelas:'3',cp:'Peserta didik mampu melakukan operasi hitung bilangan cacah dan pecahan sederhana, memahami hubungan antar operasi, mengenal bilangan romawi, serta menghitung keliling dan luas bangun datar. Peserta didik mampu menyajikan dan menafsirkan data dalam bentuk tabel dan diagram sederhana.'},
+      {fase:'C',kelas:'5',cp:'Peserta didik mampu mengoperasikan pecahan, desimal, dan persen dalam berbagai konteks, memahami konsep rasio dan proporsi, menghitung luas dan volume bangun ruang sederhana, serta menganalisis data statistika dan peluang dalam kehidupan sehari-hari.'}
+    ]},
+    {id:'ipas-sd',nama:'IPAS (IPA & IPS)',icon:'🔬',fases:[
+      {fase:'A',kelas:'1',cp:'Peserta didik mampu mengenali diri dan lingkungan sekitarnya, memahami anggota tubuh dan fungsinya, mengenal makhluk hidup di sekitar, serta memahami lingkungan keluarga dan komunitas terdekat.'},
+      {fase:'B',kelas:'3',cp:'Peserta didik mampu memahami ciri-ciri makhluk hidup, hubungan antar makhluk hidup dalam ekosistem sederhana, gejala alam fisik, serta sejarah dan kebudayaan daerah setempat. Peserta didik menunjukkan kepedulian terhadap lingkungan alam dan sosial.'},
+      {fase:'C',kelas:'5',cp:'Peserta didik mampu menganalisis sistem kehidupan (rantai makanan, siklus air, tata surya), memahami gejala alam dan sains dasar secara konseptual, serta mengkaji kondisi sosial, ekonomi, dan budaya masyarakat Indonesia dalam konteks sejarah dan geografi.'}
+    ]},
+    {id:'sbdp-sd',nama:'Seni Budaya',icon:'🎨',fases:[
+      {fase:'A',kelas:'1',cp:'Peserta didik mampu mengenali unsur-unsur dasar seni rupa, seni musik, dan seni tari. Peserta didik mengekspresikan diri melalui kegiatan menggambar, bernyanyi, dan bergerak dengan rasa senang dan percaya diri.'},
+      {fase:'B',kelas:'3',cp:'Peserta didik mampu memahami unsur-unsur seni dan estetika serta menggunakannya dalam berkarya. Peserta didik menciptakan karya seni rupa, musik, dan tari sederhana yang terinspirasi dari budaya lokal dan nusantara.'},
+      {fase:'C',kelas:'5',cp:'Peserta didik mampu mengapresiasi karya seni dari berbagai budaya dan menjelaskan nilai estetika serta pesan yang terkandung di dalamnya. Peserta didik mampu menciptakan karya seni yang orisinal dengan teknik yang lebih baik dan mengkomunikasikan proses kreatifnya.'}
+    ]},
+    {id:'pjok-sd',nama:'PJOK',icon:'⚽',fases:[
+      {fase:'A',kelas:'1',cp:'Peserta didik mampu menunjukkan kemampuan gerak dasar manipulatif dan non-manipulatif dalam berbagai aktivitas fisik. Peserta didik memahami konsep tubuh sehat, kebersihan diri, dan keselamatan dalam bermain.'},
+      {fase:'B',kelas:'3',cp:'Peserta didik mampu mempraktikkan berbagai keterampilan gerak dalam permainan dan olahraga, memahami peraturan sederhana, serta bekerja sama dalam tim. Peserta didik memahami pentingnya gaya hidup sehat dan aktif.'},
+      {fase:'C',kelas:'5',cp:'Peserta didik mampu mempraktikkan berbagai aktivitas jasmani dengan teknik yang lebih baik, memahami taktik dasar dalam permainan, serta menerapkan prinsip hidup sehat, kebugaran jasmani, dan keselamatan dalam olahraga.'}
+    ]},
+    {id:'bing-sd',nama:'Bahasa Inggris',icon:'🌐',fases:[
+      {fase:'A',kelas:'1',cp:'Peserta didik mampu memahami dan menggunakan ungkapan sehari-hari dalam Bahasa Inggris secara lisan, mengenal kosakata dasar tentang identitas, anggota keluarga, benda, warna, dan angka, serta merespons instruksi sederhana.'},
+      {fase:'B',kelas:'3',cp:'Peserta didik mampu memahami teks lisan dan tulisan sederhana dalam Bahasa Inggris tentang topik familiar, menggunakan kosakata yang berkembang dalam kalimat sederhana, serta berkomunikasi secara dasar dalam konteks sekolah dan keluarga.'},
+      {fase:'C',kelas:'5',cp:'Peserta didik mampu memahami teks deskriptif dan naratif pendek dalam Bahasa Inggris, menulis kalimat dan paragraf sederhana, serta berkomunikasi secara lisan dengan kepercayaan diri dalam berbagai situasi sehari-hari.'}
+    ]}
+  ],
+  smp: [
+    {id:'pai-smp',nama:'Pendidikan Agama Islam & Budi Pekerti',icon:'☪',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu membaca Al-Qur\'an dengan tartil sesuai tajwid dan menghafalkan sejumlah surah pilihan beserta artinya. Peserta didik memahami pokok-pokok aqidah Islam (iman kepada Allah, malaikat, kitab, rasul, hari akhir, dan qada-qadar), fiqih ibadah, muamalah, dan sejarah peradaban Islam. Peserta didik memiliki akhlak mulia, mampu berpikir kritis terhadap nilai-nilai keislaman, dan mengintegrasikan nilai Islam dalam kehidupan bermasyarakat.'}
+    ]},
+    {id:'ppkn-smp',nama:'Pendidikan Pancasila',icon:'🦅',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu menganalisis nilai-nilai Pancasila sebagai pandangan hidup dan dasar negara, memahami sejarah perumusan Pancasila dan UUD 1945, serta mengkaji sistem pemerintahan, lembaga-lembaga negara, dan hak asasi manusia. Peserta didik berpartisipasi aktif sebagai warga negara yang bertanggung jawab dan memiliki kesadaran berbangsa dan bernegara.'}
+    ]},
+    {id:'binds-smp',nama:'Bahasa Indonesia',icon:'📖',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu membaca, memahami, dan mengevaluasi teks dari berbagai genre (teks informasi, narasi, argumentasi, fiksi) dengan menggunakan strategi membaca yang sesuai. Peserta didik mampu menulis teks dengan berbagai tujuan dan genre secara terstruktur, menggunakan kalimat efektif, diksi tepat, dan ejaan yang benar. Peserta didik mampu berkomunikasi secara lisan dan tulisan dengan kritis dan kreatif.'}
+    ]},
+    {id:'mat-smp',nama:'Matematika',icon:'➕',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu menggunakan bilangan bulat, pecahan, dan bilangan berpangkat dalam berbagai konteks; memahami aljabar dan fungsi, persamaan dan pertidaksamaan linear; menganalisis bangun datar dan bangun ruang beserta sifat-sifatnya; memahami transformasi geometri; serta mengolah dan menafsirkan data statistika dan peluang untuk mengambil keputusan.'}
+    ]},
+    {id:'ipa-smp',nama:'Ilmu Pengetahuan Alam (IPA)',icon:'🔬',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu melakukan observasi, mengajukan pertanyaan ilmiah, merencanakan dan melaksanakan penyelidikan sains. Peserta didik memahami konsep dasar fisika (gerak, gaya, energi, gelombang, listrik), kimia (zat dan perubahan, asam-basa, reaksi kimia), dan biologi (sel, jaringan, organ, ekosistem, genetika dasar). Peserta didik mengomunikasikan hasil penyelidikan secara ilmiah.'}
+    ]},
+    {id:'ips-smp',nama:'Ilmu Pengetahuan Sosial (IPS)',icon:'🌏',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu memahami kondisi geografis, demografis, dan sumber daya alam Indonesia; menganalisis perjalanan sejarah bangsa Indonesia; memahami konsep ekonomi dasar, sistem perekonomian, dan peran lembaga keuangan; serta mengkaji dinamika masyarakat, interaksi sosial, dan permasalahan sosial untuk menumbuhkan kepedulian terhadap lingkungan sekitar.'}
+    ]},
+    {id:'sbdp-smp',nama:'Seni Budaya',icon:'🎨',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu mengapresiasi dan mengkritisi karya seni rupa, seni musik, seni tari, dan teater dari berbagai perspektif estetika dan budaya. Peserta didik mampu berkreasi dengan menggunakan berbagai medium, teknik, dan prosedur seni secara orisinal, mengekspresikan gagasan dengan percaya diri, dan mengomunikasikan karya serta proses penciptaannya.'}
+    ]},
+    {id:'pjok-smp',nama:'PJOK',icon:'⚽',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu mempraktikkan berbagai aktivitas jasmani dan olahraga dengan keterampilan, taktik, dan sportivitas yang baik. Peserta didik memahami konsep kebugaran jasmani, kesehatan reproduksi remaja, pencegahan penyakit, pertolongan pertama, dan bahaya narkoba, serta menerapkan gaya hidup aktif dan sehat secara konsisten.'}
+    ]},
+    {id:'bing-smp',nama:'Bahasa Inggris',icon:'🌐',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu memahami teks lisan dan tulisan dalam Bahasa Inggris dari berbagai genre (deskriptif, naratif, prosedur, recount, eksposisi) secara analitis. Peserta didik mampu berkomunikasi secara lisan dan tulisan dalam berbagai situasi formal dan informal, menggunakan tata bahasa dan kosakata yang tepat, serta mengapresiasi karya sastra berbahasa Inggris secara sederhana.'}
+    ]},
+    {id:'informatika-smp',nama:'Informatika',icon:'💻',fases:[
+      {fase:'D',kelas:'7',cp:'Peserta didik mampu menerapkan berpikir komputasional dalam memecahkan permasalahan sehari-hari. Peserta didik memahami dan mampu menggunakan perangkat TIK, sistem jaringan, dan internet secara etis dan bertanggung jawab; mampu membuat program sederhana menggunakan bahasa pemrograman; serta memahami konsep data, analisis data, dan dampak sosial informatika.'}
+    ]}
+  ]
+};
+
+const KELAS_MAP = {
+  sd: {A:['1','2'],B:['3','4'],C:['5','6']},
+  smp: {D:['7','8','9']}
+};
+
+const TABLE_REF = {
+  standar: `<strong>Tabel 3 kolom:</strong><br>
+No &nbsp;|&nbsp; Capaian Pembelajaran (CP) &nbsp;|&nbsp; Tujuan Pembelajaran (TP) &amp; Alur TP (ATP)<br><br>
+• 5–6 TP per topik, tersusun dari dasar → HOTS<br>
+• TP ditulis: "Murid dapat..." + Condition + Degree<br>
+• 2 tujuan terakhir level menerapkan/menganalisis/mengevaluasi/mencipta`,
+  bukupaket: `<strong>Tabel 5 kolom:</strong><br>
+No &nbsp;|&nbsp; CP &nbsp;|&nbsp; TP &nbsp;|&nbsp; Taksonomi SOLO &nbsp;|&nbsp; Materi Pokok &nbsp;|&nbsp; Dimensi Profil Lulusan<br><br>
+• Taksonomi SOLO: Prastruktural → Multistruktural → Relasional → Extended Abstract<br>
+• DPL: Keimanan, Kewargaan, Penalaran Kritis, Kreativitas, Kolaborasi, Kemandirian, Kesehatan, Komunikasi`,
+  kbc: `<strong>Tabel 7 kolom:</strong><br>
+No &nbsp;|&nbsp; CP &nbsp;|&nbsp; TP &nbsp;|&nbsp; SOLO &nbsp;|&nbsp; Materi &nbsp;|&nbsp; DPL &nbsp;|&nbsp; Panca Cinta (KBC) &nbsp;|&nbsp; Leadership Ar-Rahmah<br><br>
+• Panca Cinta: Cinta Allah &amp; Rasul, Cinta Ilmu, Cinta Lingkungan, Cinta Diri &amp; Sesama, Cinta Tanah Air<br>
+• Leadership: Spiritual Values · Academic Literacy · Leadership Competencies`,
+  slb: `<strong>Tabel 5 kolom (adaptasi ABK):</strong><br>
+No &nbsp;|&nbsp; CP Adaptasi &nbsp;|&nbsp; TP &nbsp;|&nbsp; Taksonomi SOLO &nbsp;|&nbsp; Materi Pokok &nbsp;|&nbsp; Dimensi Profil Lulusan<br><br>
+• TP disesuaikan kemampuan murid berkebutuhan khusus<br>
+• Scaffolding dan dukungan pembelajaran dicantumkan dalam TP`
+};
+
+let activeType = 'standar';
+let activeMetode = '';
+let currentCP = '';
+
+const METODE_DESC = {
+  '': '',
+  pjbl: 'Murid belajar melalui proyek nyata — menghasilkan produk/karya sebagai bukti pemahaman.',
+  pbl:  'Murid belajar melalui pemecahan masalah kontekstual yang tidak memiliki satu jawaban benar.',
+  inquiry: 'Murid belajar melalui proses bertanya, menyelidiki, dan menemukan jawaban secara mandiri.'
+};
+
+const METODE_PROMPT = {
+  '': '',
+  pjbl: `\n\nPendekatan pembelajaran yang digunakan adalah Project Based Learning (PjBL). Pastikan setiap Tujuan Pembelajaran dirancang agar murid dapat menghasilkan produk atau karya nyata sebagai bukti pemahaman. Tahapan PjBL yang perlu tercermin dalam TP: (1) Pertanyaan Mendasar, (2) Perencanaan Proyek, (3) Penjadwalan, (4) Monitoring, (5) Pengujian Hasil, (6) Evaluasi & Refleksi. Produk akhir proyek harus disesuaikan dengan konteks kehidupan nyata murid.`,
+  pbl:  `\n\nPendekatan pembelajaran yang digunakan adalah Problem Based Learning (PBL). Pastikan setiap Tujuan Pembelajaran berpusat pada pemecahan masalah kontekstual yang relevan dengan kehidupan murid. Tahapan PBL yang perlu tercermin dalam TP: (1) Orientasi pada Masalah, (2) Organisasi Belajar, (3) Penyelidikan Mandiri/Kelompok, (4) Pengembangan dan Penyajian Hasil, (5) Analisis dan Evaluasi. Masalah yang disajikan bersifat ill-structured (tidak memiliki satu jawaban tunggal) dan mendorong berpikir kritis.`,
+  inquiry: `\n\nPendekatan pembelajaran yang digunakan adalah Inquiry Learning. Pastikan setiap Tujuan Pembelajaran mendorong murid untuk bertanya, menyelidiki, dan menemukan pengetahuan secara mandiri. Tahapan Inquiry yang perlu tercermin dalam TP: (1) Orientasi/Stimulasi, (2) Perumusan Masalah, (3) Pengajuan Hipotesis, (4) Pengumpulan Data, (5) Pengujian Hipotesis, (6) Perumusan Kesimpulan. Guru berperan sebagai fasilitator, bukan sumber utama pengetahuan.`
+};
+
+function setMetode(m) {
+  activeMetode = m;
+  document.querySelectorAll('.metode-pill').forEach(p => p.classList.remove('active'));
+  const idMap = {'':'mpil-none',pjbl:'mpil-pjbl',pbl:'mpil-pbl',inquiry:'mpil-inquiry'};
+  document.getElementById(idMap[m]).classList.add('active');
+  document.getElementById('metode-desc').textContent = METODE_DESC[m];
+  generate();
+}
+
+function onJenjang() {
+  const j = document.getElementById('sel-jenjang').value;
+  const selMapel = document.getElementById('sel-mapel');
+  selMapel.innerHTML = '<option value="">— Pilih Mata Pelajaran —</option>';
+  if (!j) { selMapel.disabled = true; return; }
+  (CP_DATA[j]||[]).forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.id; opt.textContent = m.icon + ' ' + m.nama;
+    selMapel.appendChild(opt);
+  });
+  selMapel.disabled = false;
+  resetKelasAndFase();
+  loadFromStorage();
+}
+
+function onMapel() {
+  const j = document.getElementById('sel-jenjang').value;
+  const mid = document.getElementById('sel-mapel').value;
+  const selKelas = document.getElementById('sel-kelas');
+  const selFase = document.getElementById('sel-fase');
+  selKelas.innerHTML = '<option value="">—</option>';
+  selFase.innerHTML = '<option value="">—</option>';
+  selKelas.disabled = true; selFase.disabled = true;
+  currentCP = '';
+  updateCPPreview('');
+  if (!mid || !j) return;
+  const mapel = (CP_DATA[j]||[]).find(m=>m.id===mid);
+  if (!mapel) return;
+  const fasesUsed = [...new Set(mapel.fases.map(f=>f.fase))];
+  fasesUsed.forEach(fase => {
+    const kelasList = (KELAS_MAP[j]||{})[fase]||[];
+    kelasList.forEach(k => {
+      const opt = document.createElement('option');
+      opt.value = k; opt.textContent = 'Kelas ' + k;
+      selKelas.appendChild(opt);
+    });
+    const fopt = document.createElement('option');
+    fopt.value = fase; fopt.textContent = 'Fase ' + fase;
+    selFase.appendChild(fopt);
+  });
+  selKelas.disabled = false; selFase.disabled = false;
+  generate();
+}
+
+function syncFase() {
+  const j = document.getElementById('sel-jenjang').value;
+  const k = parseInt(document.getElementById('sel-kelas').value)||0;
+  if (!k || !j) return;
+  const faseMap = KELAS_MAP[j]||{};
+  let found = '';
+  Object.entries(faseMap).forEach(([f,ks]) => { if(ks.includes(String(k))) found = f; });
+  if (found) document.getElementById('sel-fase').value = found;
+  onFase();
+}
+
+function onFase() {
+  const j = document.getElementById('sel-jenjang').value;
+  const mid = document.getElementById('sel-mapel').value;
+  const fase = document.getElementById('sel-fase').value;
+  if (!j||!mid||!fase) { currentCP=''; updateCPPreview(''); generate(); return; }
+  const mapel = (CP_DATA[j]||[]).find(m=>m.id===mid);
+  const faseObj = mapel ? mapel.fases.find(f=>f.fase===fase) : null;
+  currentCP = faseObj ? faseObj.cp : '';
+  updateCPPreview(currentCP);
+  saveToStorage();
+  generate();
+}
+
+function updateCPPreview(cp) {
+  const el = document.getElementById('cp-preview');
+  if (!cp) {
+    el.innerHTML = '<span class="cp-placeholder">Pilih mata pelajaran dan fase untuk melihat CP...</span>';
+  } else {
+    el.textContent = cp;
+  }
+}
+
+function resetKelasAndFase() {
+  const selK = document.getElementById('sel-kelas');
+  const selF = document.getElementById('sel-fase');
+  selK.innerHTML = '<option value="">—</option>'; selK.disabled = true;
+  selF.innerHTML = '<option value="">—</option>'; selF.disabled = true;
+}
+
+function setType(t) {
+  activeType = t;
+  ['standar','bukupaket','kbc','slb'].forEach(x => {
+    document.getElementById('btn-'+x).classList.toggle('active', x===t);
+  });
+  document.getElementById('slb-section').style.display = t==='slb' ? '' : 'none';
+  document.getElementById('buku-section').style.display = (t==='bukupaket'||t==='kbc'||t==='slb') ? '' : 'none';
+  const badges = {standar:'ATP Standar',bukupaket:'ATP + Buku Paket',kbc:'ATP + Panca Cinta',slb:'ATP ABK'};
+  document.getElementById('type-badge').textContent = badges[t]||'ATP';
+  document.getElementById('table-ref').innerHTML = TABLE_REF[t]||'';
+  generate();
+}
+
+function generate() {
+  const j = document.getElementById('sel-jenjang').value;
+  const mid = document.getElementById('sel-mapel').value;
+  const kelas = document.getElementById('sel-kelas').value;
+  const fase = document.getElementById('sel-fase').value;
+  const buku = document.getElementById('inp-buku').value.trim();
+  const kebutuhan = document.getElementById('inp-kebutuhan').value.trim();
+  const hasLeadership = document.getElementById('chk-leadership').checked;
+  const hasModul = document.getElementById('chk-modul').checked;
+  const metodeBlock = METODE_PROMPT[activeMetode] || '';
+  const topik = document.getElementById('inp-topik').value.trim() || '[TOPIK PEMBELAJARAN]';
+  const waktu = document.getElementById('sel-waktu').value;
+  const semester = document.getElementById('sel-semester').value;
+
+  const waktuMap = {'2x40':'2×40 Menit','2x45':'2×45 Menit','3x40':'3×40 Menit','3x45':'3×45 Menit','1x35':'1×35 Menit'};
+  const waktuLabel = waktuMap[waktu] || '2×40 Menit';
+
+  const menitAwal = waktu.includes('35') ? 5 : 15;
+  const menitPenutup = 5;
+  const menitTotal = waktu.startsWith('2') ? (waktu.includes('40') ? 80 : 90) : (waktu.includes('40') ? 120 : 135);
+  const menitInti = menitTotal - menitAwal - menitPenutup;
+
+  const namaModel = activeMetode === 'pjbl' ? 'Project Based Learning (PjBL)' :
+                    activeMetode === 'pbl'  ? 'Problem Based Learning (PBL)' :
+                    activeMetode === 'inquiry' ? 'Inquiry Learning' : 'Pembelajaran Mendalam';
+
+  const sintaksModel = activeMetode === 'pjbl'
+    ? 'Sintaks PjBL: (1) Pertanyaan Mendasar, (2) Perencanaan Proyek, (3) Penjadwalan, (4) Monitoring, (5) Pengujian Hasil, (6) Evaluasi & Refleksi'
+    : activeMetode === 'pbl'
+    ? 'Sintaks PBL: (1) Orientasi pada Masalah, (2) Organisasi Belajar, (3) Penyelidikan Mandiri/Kelompok, (4) Pengembangan & Penyajian Hasil, (5) Analisis & Evaluasi'
+    : activeMetode === 'inquiry'
+    ? 'Sintaks Inquiry: (1) Orientasi/Stimulasi, (2) Perumusan Masalah, (3) Pengajuan Hipotesis, (4) Pengumpulan Data, (5) Pengujian Hipotesis, (6) Perumusan Kesimpulan'
+    : 'Sintaks Pembelajaran Mendalam: (1) Memahami, (2) Mengaplikasikan, (3) Merefleksi';
+
+  const mapel = (CP_DATA[j]||[]).find(m=>m.id===mid);
+  const namaMapel = mapel ? mapel.nama : '[NAMA MAPEL]';
+  const kelasLabel = kelas ? 'Kelas ' + kelas : '[KELAS]';
+  const faseLabel = fase ? fase : '[FASE]';
+  const cpText = currentCP || '[TULISKAN CAPAIAN PEMBELAJARAN DI SINI]';
+
+  const out = document.getElementById('prompt-output');
+
+  if (!mid || !fase) {
+    out.textContent = 'Isi form di panel kiri untuk menghasilkan prompt...';
+    out.classList.add('empty');
+    document.getElementById('char-count').textContent = '';
+    return;
+  }
+  out.classList.remove('empty');
+
+  let intro = '';
+  if (activeType === 'slb') {
+    const kb = kebutuhan || '[TUNAGRAHITA/TUNARUNGU/dll]';
+    intro = `Saya adalah seorang guru mata pelajaran ${namaMapel} yang mengajar di ${kelasLabel}, fase ${faseLabel}, dengan kebutuhan murid yaitu ${kb}.`;
+  } else {
+    intro = `Saya adalah seorang guru mata pelajaran ${namaMapel} yang mengajar di ${kelasLabel}, fase ${faseLabel}.`;
+  }
+
+  const bodyCP = `\n\nSaya sedang menyusun perangkat ajar berdasarkan Capaian Pembelajaran berikut:\n${cpText}`;
+
+  const bodyTP = `\n\nSetiap topik materi yang terkandung dalam capaian pembelajaran tersebut akan saya uraikan menjadi 5 hingga 6 Tujuan Pembelajaran (TP). Tujuan pertama dirancang untuk membangun pemahaman dasar peserta didik, sedangkan tujuan kedua dan seterusnya difokuskan pada penerapan pendekatan pembelajaran mendalam. Dua tujuan terakhir diarahkan pada proses berpikir tingkat tinggi (HOTS), yaitu pada level menerapkan, menganalisis, mengevaluasi, atau mencipta sesuai taksonomi Bloom revisi.`;
+
+  let bodyBuku = '';
+  if ((activeType==='bukupaket'||activeType==='kbc'||activeType==='slb') && buku) {
+    bodyBuku = `\n\nSesuaikan materi pembelajaran dengan buku paket yaitu:\n${buku}`;
+  }
+
+  const bodyFormat = `\n\nTujuan Pembelajaran ditulis menggunakan kalimat operasional (Behavior) yang diawali dengan subjek belajar (Audience) yaitu "Murid dapat...", bersifat terukur, dan disesuaikan dengan perkembangan kognitif murid di kelas tersebut. Tujuan juga memuat konteks (Condition), dan tingkat pencapaian (Degree).`;
+
+  let bodyOutput = '';
+  if (activeType==='standar') {
+    bodyOutput = `\n\nSetelah tujuan pembelajaran dirumuskan, setiap TP yang dihasilkan ditulis ulang dan diurutkan dalam Alur Tujuan Pembelajaran (ATP) sesuai dengan level berpikir yang akan dituju pada akhir fase.\n\nOutput yang diharapkan disajikan dalam bentuk tabel tiga kolom:\n- Capaian Pembelajaran (CP)\n- Tujuan Pembelajaran (TP), berurutan sesuai topik dan level berpikir\n- Alur Tujuan Pembelajaran (ATP)\n\nTabel diberi nomor urut pada setiap baris. Untuk topik yang memiliki lebih dari satu TP, tetap gunakan CP yang sama di kolom pertama.`;
+  } else if (activeType==='bukupaket'||activeType==='slb') {
+    bodyOutput = `\n\nTulis ulang capaian pembelajaran dalam bentuk poin sesuai elemen di bagian paling atas sebelum tabel.\n\nOutput yang diharapkan disajikan dalam bentuk tabel lima kolom:\n- Capaian Pembelajaran (CP)\n- Tujuan Pembelajaran (TP)\n- Taksonomi SOLO\n- Materi Pokok\n- Dimensi Profil Lulusan (DPL): keimanan & ketakwaan, kewargaan, penalaran kritis, kreativitas, kolaborasi, kemandirian, kesehatan, atau komunikasi\n\nTabel diberi nomor urut pada setiap baris.`;
+  } else if (activeType==='kbc') {
+    bodyOutput = `\n\nOutput yang diharapkan disajikan dalam bentuk tabel tujuh kolom:\n- Capaian Pembelajaran (CP)\n- Tujuan Pembelajaran (TP)\n- Taksonomi SOLO\n- Materi Pokok\n- Dimensi Profil Lulusan (DPL): keimanan & ketakwaan, kewargaan, penalaran kritis, kreativitas, kolaborasi, kemandirian, kesehatan, atau komunikasi\n- Topik Panca Cinta (KBC): Cinta Allah dan Rasul-Nya, Cinta Ilmu, Cinta Lingkungan, Cinta Diri dan Sesama, Cinta Tanah Air\n\nTabel diberi nomor urut pada setiap baris.`;
+  }
+
+  let bodyLeadership = '';
+  if (hasLeadership) {
+    bodyLeadership = `\n\nPada setiap Tujuan Pembelajaran, tambahkan kolom "Nilai Leadership Ar-Rahmah" yang memuat indikator relevan dari tiga pilar:\n1. Spiritual Values: Salat, Ibadah, Iman, Adab & Akhlak, Peradaban Islam\n2. Academic Literacy: Literacy, Numeracy, Scientific Literacy, ICT Literacy, Financial Literacy, Cultural & Civic Literacy\n3. Leadership Competencies: Communication, Problem Solving, Collaboration, Social Skill, Fast Learning Skills\nPilih indikator yang paling relevan dengan setiap tujuan pembelajaran (boleh lebih dari satu pilar).`;
+  }
+
+  let bodyModul = '';
+  if (hasModul) {
+    bodyModul = `\n\nSetelah tabel ATP selesai, buatkan satu Perencanaan Pembelajaran Mendalam (RPM) yang lengkap untuk salah satu TP yang mengandung HOTS dengan topik "${topik}". Gunakan struktur dan format berikut secara tepat:
+
+OUTPUT DALAM BENTUK TABEL DUA KOLOM (kolom 1: Komponen/Sub-komponen, kolom 2: Isi RPM). Format portrait, rapi, siap pakai tanpa perlu diedit kembali.
+
+A. IDENTITAS
+Sub-komponen: Penyusun (nama guru), Sekolah (Yayasan Ar-Rahmah Sulawesi), Tahun Ajaran, Semester ${semester}, Mata Pelajaran (${namaMapel}), Kelas/Fase Capaian (${kelasLabel} / Fase ${faseLabel}), Topik (${topik}), Alokasi Waktu (${waktuLabel}).
+
+B. IDENTIFIKASI
+- Identifikasi Murid: uraikan (1) pengetahuan awal yang dimiliki murid terkait topik ini, (2) minat belajar yang relevan dengan usia dan konteks, (3) kebutuhan belajar khusus yang perlu diperhatikan.
+- Materi Pelajaran: klasifikasikan konten ke dalam 4 jenis — Faktual (fakta dan data), Konseptual (konsep dan prinsip), Prosedural (langkah-langkah), Metakognitif (strategi berpikir dan refleksi diri).
+- Dimensi Profil Lulusan (DPL): pilih 3–4 dimensi yang paling relevan dengan topik dari: keimanan & ketakwaan, kewargaan, penalaran kritis, kreativitas, kolaborasi, kemandirian, kesehatan, komunikasi.
+
+C. DESAIN PEMBELAJARAN
+- Capaian Pembelajaran: tuliskan CP yang relevan dari fase ini.
+- Lintas Disiplin Ilmu: sebutkan 1–2 mata pelajaran lain yang berkaitan dengan topik ini dan jelaskan keterkaitannya.
+- Tujuan Pembelajaran: tulis 2–3 TP untuk satu pertemuan (${waktuLabel}), mencakup level kognitif dari mengingat hingga mencipta sesuai taksonomi Bloom revisi. Format: "Murid dapat... [Condition]... [Degree]..."
+- Topik Pembelajaran: ${topik}
+- Praktik Pedagogis:
+  · Pendekatan: Pembelajaran Mendalam (Mindful – Meaningful – Joyful)
+  · Model: ${namaModel}
+  · ${sintaksModel}
+  · Metode: sebutkan 2–3 metode konkret yang sesuai (diskusi, demonstrasi, eksperimen, dll.)
+- Kemitraan Pembelajaran: sebutkan pihak yang dilibatkan (komunitas kelas, orang tua, lingkungan, ahli/narasumber).
+- Lingkungan Pembelajaran: deskripsikan pengaturan ruang dan suasana belajar yang mendukung.
+- Pemanfaatan Digital: sebutkan alat/media digital yang digunakan (video, aplikasi, platform, dll.).
+
+D. PENGALAMAN BELAJAR
+
+Kegiatan Awal (${menitAwal} menit) — Prinsip: Mindful / Meaningful / Joyful (tandai yang digunakan)
+Format setiap poin: aktivitas konkret guru DAN murid secara bergantian. Minimal 4 poin aktivitas bernomor.
+Wajib mencakup: salam pembuka, doa, cek kehadiran, apersepsi (kaitkan materi dengan pengalaman nyata murid), motivasi, penyampaian tujuan pembelajaran dan manfaatnya, asesmen awal singkat.
+
+Kegiatan Inti (${menitInti} menit) — Prinsip ditulis di AWAL setiap tahap sebelum rincian aktivitas.
+Gunakan format: [Nama Tahap] (Sintaks Model) (Estimasi Waktu)
+Tiga tahap wajib:
+1. Memahami (${sintaksModel.split('(1)')[1]?.split(',')[0]?.trim() || 'Orientasi'}) (± ${Math.round(menitInti*0.35)} menit)
+   — Minimal 4 poin aktivitas konkret. Sintaks model dicantumkan dalam tanda kurung setelah nama tahap.
+   — DPL dicantumkan dalam tanda kurung di AKHIR setiap kalimat aktivitas.
+2. Mengaplikasikan (${sintaksModel.split('(2)')[1]?.split(',')[0]?.trim() || 'Penerapan'}) (± ${Math.round(menitInti*0.40)} menit)
+   — Minimal 4 poin aktivitas konkret. Murid bekerja dengan kasus/masalah nyata dari kehidupan sehari-hari.
+   — DPL dicantumkan di akhir setiap kalimat aktivitas.
+3. Merefleksi (${sintaksModel.split('(').pop()?.replace(')','')?.trim() || 'Refleksi'}) (± ${Math.round(menitInti*0.25)} menit)
+   — Minimal 4 poin aktivitas. Murid meninjau proses belajar, kesulitan, dan rencana tindak lanjut.
+   — DPL dicantumkan di akhir setiap kalimat aktivitas.
+
+Kegiatan Penutup (${menitPenutup} menit) — Prinsip: Meaningful / Mindful (tandai yang digunakan)
+Wajib mencakup: simpulan bersama murid, umpan balik guru, informasi pertemuan berikutnya, doa penutup, salam.
+
+E. ASESMEN PEMBELAJARAN
+- Awal: jenis (diagnostik), bentuk (tanya jawab lisan / kuis singkat), teknik (observasi / pertanyaan lisan)
+- Proses: jenis (formatif), bentuk (penilaian sikap + penilaian kinerja), teknik (observasi + peer assessment)
+- Akhir: jenis (sumatif), bentuk (tes tertulis / produk / portofolio), teknik (rubrik + tes pilihan ganda/uraian)
+Tambahkan kolom tanda tangan: Kepala Sekolah (nama sesuai konteks) dan Guru Mata Pelajaran.
+
+LAMPIRAN (terpisah dari tabel RPM, tampilkan setelah tabel selesai):
+
+1. Soal Asesmen Awal — 5 soal (campuran pilihan ganda dan uraian singkat) beserta kunci jawaban, disesuaikan dengan pengetahuan awal murid tentang topik "${topik}".
+
+2. Rubrik Penilaian Sikap (4 skala: 1–4) — aspek disesuaikan dengan DPL yang dipilih. Format tabel: Aspek | Skor 4 | Skor 3 | Skor 2 | Skor 1.
+
+3. Rubrik Penilaian Pengetahuan (4 skala) — aspek: pemahaman konsep, ketepatan jawaban, kemampuan analisis. Format tabel rapi.
+
+4. Rubrik Penilaian Keterampilan (4 skala) — aspek: proses kerja, hasil karya/produk, kemampuan presentasi/komunikasi. Format tabel rapi.
+
+5. Materi Ajar — ringkasan materi "${topik}" yang mencakup poin-poin faktual, konseptual, dan prosedural, disajikan dalam bahasa yang sesuai jenjang ${kelasLabel}.
+
+6. Lembar Kerja Peserta Didik (LKPD) — lengkap dan siap pakai, mencakup:
+   a. Identitas: nama peserta didik, mata pelajaran, no absen, kelas, tanggal
+   b. Petunjuk: langkah pengerjaan, alat yang dibutuhkan, cara menjawab
+   c. Kegiatan Memahami: teks/gambar/data yang diamati + minimal 3 pertanyaan pemahaman
+   d. Kegiatan Mengaplikasikan: kasus nyata dari kehidupan murid + instruksi + ruang jawaban
+   e. Kegiatan Merefleksi: 2–3 pertanyaan refleksi (proses belajar, kesulitan, rencana tindak lanjut)
+   f. Penutup: kalimat penyemangat + kolom cek pemahaman diri (checklist sederhana)
+   LKPD harus utuh dan lengkap — bukan kerangka atau daftar isi saja. Sintaks pembelajaran dan pengalaman belajar diintegrasikan menjadi satu alur, tidak dalam bentuk tabel.`;
+  }
+
+  const closing = `\n\nDengan format ini, saya ingin menghasilkan perangkat ajar yang tidak hanya menekankan penguasaan konsep, tetapi juga mengembangkan kemampuan berpikir kritis, kreatif, dan reflektif murid melalui pendekatan pembelajaran mendalam.`;
+
+  const result = intro + bodyCP + bodyTP + metodeBlock + bodyBuku + bodyFormat + bodyOutput + bodyLeadership + bodyModul + closing;
+  out.textContent = result;
+  document.getElementById('char-count').textContent = result.length.toLocaleString('id') + ' karakter';
+}
+
+function copyPrompt() {
+  const txt = document.getElementById('prompt-output').textContent;
+  if (!txt || txt.includes('Isi form')) return;
+  navigator.clipboard.writeText(txt).then(() => {
+    const msg = document.getElementById('copied-msg');
+    msg.style.display = 'flex';
+    setTimeout(() => { msg.style.display = 'none'; }, 3000);
+  });
+}
+
+function openClaude() {
+  const txt = document.getElementById('prompt-output').textContent;
+  if (!txt || txt.includes('Isi form')) return;
+  navigator.clipboard.writeText(txt).then(() => {
+    window.open('https://claude.ai/new', '_blank');
+  });
+}
+
+function openChatGPT() {
+  const txt = document.getElementById('prompt-output').textContent;
+  if (!txt || txt.includes('Isi form')) return;
+  navigator.clipboard.writeText(txt).then(() => {
+    window.open('https://chatgpt.com/', '_blank');
+  });
+}
+
+// localStorage
+function saveToStorage() {
+  try {
+    localStorage.setItem('atp_jenjang', document.getElementById('sel-jenjang').value);
+    localStorage.setItem('atp_mapel', document.getElementById('sel-mapel').value);
+    localStorage.setItem('atp_kelas', document.getElementById('sel-kelas').value);
+    localStorage.setItem('atp_fase', document.getElementById('sel-fase').value);
+  } catch(e) {}
+}
+
+function loadFromStorage() {
+  try {
+    const mapel = localStorage.getItem('atp_mapel');
+    const kelas = localStorage.getItem('atp_kelas');
+    if (mapel) {
+      const selMapel = document.getElementById('sel-mapel');
+      if ([...selMapel.options].some(o=>o.value===mapel)) {
+        selMapel.value = mapel;
+        onMapel();
+        setTimeout(() => {
+          if (kelas) {
+            document.getElementById('sel-kelas').value = kelas;
+            syncFase();
+          }
+        }, 50);
+      }
+    }
+  } catch(e) {}
+}
+
+// Init
+document.getElementById('table-ref').innerHTML = TABLE_REF['standar'];
+document.getElementById('mpil-none').classList.add('active');
+</script>
+</body>
+</html>
